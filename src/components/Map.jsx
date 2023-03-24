@@ -3,23 +3,21 @@ import {
   ComposableMap,
   Geographies,
   Geography,
-  Annotation,
-  ZoomableGroup
+  Annotation
 } from "react-simple-maps";
 
 const Map = () => {
   return (
     <ComposableMap
-      projection="geoAzimuthalEqualArea"
+      projection="geoAlbersUsa"
       projectionConfig={{
-        rotate: [-10.0, -52.0, 0],
-        center: [-5, -3],
-        scale: 1600
+        scale: 1100,
+        center: [-98.5, 39.5],
       }}
-      style={{width:"100%", height:"100%"}}
+      style={{ width: "100%", height: "100%" }}
     >
       <Geographies
-        geography="/features.json"
+        geography={"/states-10m.json"}
         fill="#2C065D"
         stroke="#FFFFFF"
         strokeWidth={0.5}
@@ -31,9 +29,10 @@ const Map = () => {
         }
       </Geographies>
       <Annotation
-        subject={[2.3522, 48.8566]}
-        dx={-90}
+        subject={[-94.5795, 39.0997]}
+        dx={-60}
         dy={-30}
+        curve={1.35}
         connectorProps={{
           stroke: "white",
           strokeWidth: 2,
@@ -41,7 +40,7 @@ const Map = () => {
         }}
       >
         <text x="-8" textAnchor="end" alignmentBaseline="middle" fill="white">
-          {"Paris"}
+          {"Kansas City, MO"}
         </text>
       </Annotation>
     </ComposableMap>
