@@ -1,6 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
-import Map from './Map';
+import React, { useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
+import styled from "styled-components";
+import Map from "./Map";
 
 const Section = styled.div`
   height: 100vh;
@@ -11,7 +12,7 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  justifiy-content: space-between;
+  justify-content: space-between;
   gap: 50px;
 `;
 
@@ -20,6 +21,9 @@ const Left = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  @media only screen and (max-width: 768px) {
+    justify-content: center;
+  }
 `;
 
 const Title = styled.h1`
@@ -31,6 +35,9 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 25px;
+  @media only screen and (max-width: 768px) {
+    width: 300px;
+  }
 `;
 
 const Input = styled.input`
@@ -42,9 +49,9 @@ const Input = styled.input`
 
 const TextArea = styled.textarea`
   padding: 20px;
-  background-color: #e8e6e6;
   border: none;
   border-radius: 5px;
+  background-color: #e8e6e6;
 `;
 
 const Button = styled.button`
@@ -59,32 +66,60 @@ const Button = styled.button`
 
 const Right = styled.div`
   flex: 1;
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
-const handleSubmit =e=>{
-  e.preventDefault()
-}
-
-
 const Contact = () => {
-    return (
-        <Section>
-          <Container>
-            <Left>
-              <Form onSubmit={handleSubmit}>
-                <Title>Contact Me</Title>
-                <Input placeholder='Name'/>
-                <Input placeholder='Email'/>
-                <TextArea placeholder='Write your message' rows={10}/>
-                <Button type='submit'>Send</Button>
-              </Form>
-            </Left>
-            <Right>
-              <Map/>
-            </Right>
-          </Container>
-        </Section>
-    )
-}
+  const ref = useRef();
+  const [success, setSuccess] = useState(null);
 
-export default Contact
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "service_468optf",
+        "template_ozurln5",
+        ref.current,
+        "5zN_U15uBkI2lsN-F"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          setSuccess(true);
+        },
+        (error) => {
+          console.log(error.text);
+          setSuccess(false);
+        }
+      );
+  };
+  return (
+    <Section>
+      <Container>
+        <Left>
+          <Form ref={ref} onSubmit={handleSubmit}>
+            <Title>Contact Us</Title>
+            <Input placeholder="Name" name="name" />
+            <Input placeholder="Email" name="email" />
+            <TextArea
+              placeholder="Write your message"
+              name="message"
+              rows={10}
+            />
+            <Button type="submit">Send</Button>
+            {success &&
+              "Your message has been sent. We'll get back to you soon :)"}
+          </Form>
+        </Left>
+        <Right>
+          <Map />
+        </Right>
+      </Container>
+    </Section>
+  );
+};
+
+export default Contact;
