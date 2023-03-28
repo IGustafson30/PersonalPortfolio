@@ -1,6 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import Navbar from './Navbar'
+import { MeshDistortMaterial, Sphere, OrbitControls } from '@react-three/drei';
+import React from 'react';
+import styled from 'styled-components';
+import Navbar from './Navbar';
+import { Canvas } from '@react-three/fiber';
 
 const Section = styled.div`
   height: 100vh;
@@ -90,22 +92,35 @@ const Img = styled.img`
 const Hero = () => {
     return (
         <Section>
-          <Navbar/>
-          <Container>
-            <Left>
-                <Title>Diddle. Bop. Solutions.</Title>
-                <WhatWeDo>
-                    <Line src="./img/line.png"/>
-                    <Subtitle>What I do</Subtitle>
-                </WhatWeDo>
-                <Desc>I code stuff for money, please for the love of god hire me.</Desc>
-                <Button>Learn More</Button>
-            </Left>
-            <Right>
-                {/* 3d model */}
-                <Img src="./img/moon.png"/>
-            </Right>
-          </Container>
+            <Navbar />
+            <Container>
+                <Left>
+                    <Title>Diddle. Bop. Solutions.</Title>
+                    <WhatWeDo>
+                        <Line src="./img/line.png" />
+                        <Subtitle>What I do</Subtitle>
+                    </WhatWeDo>
+                    <Desc>I code stuff for money, please for the love of god hire me.</Desc>
+                    <Button>Learn More</Button>
+                </Left>
+                <Right>
+                    <Canvas>
+                        <OrbitControls enableZoom={false} autoRotate={false} />
+                        <ambientLight intensity={1} />
+                        <directionalLight position={[3, 2, 1]} />
+                        <Sphere args={[1, 100, 200]} scale={2.4}>
+                        <MeshDistortMaterial 
+                        // color="#220736" 
+                        color="#3d1c56"
+                        attach="material" 
+                        distort={0.5} 
+                        speed={2} 
+                        />
+                        </Sphere>
+                    </Canvas>
+                    <Img src="./img/moon.png"/>
+                </Right>
+            </Container>
         </Section>
     )
 }
